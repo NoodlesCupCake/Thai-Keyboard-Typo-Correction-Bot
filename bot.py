@@ -106,7 +106,7 @@ eng2thai = {
 }
 
 intents = discord.Intents.default()
-intents.message_content = True  # Make sure your bot has permission to read message content
+intents.message_content = True 
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
@@ -116,7 +116,7 @@ async def on_ready():
 
 @bot.command(name='ome')
 async def on_message(ctx, *messages: str):    
-    combined_message = ' '.join(messages)  # Combine all messages into a single string
+    combined_message = ' '.join(messages)
     try:
         corrected_text = [eng2thai[eng_char] for eng_char in combined_message]
         if corrected_text:
@@ -124,6 +124,7 @@ async def on_message(ctx, *messages: str):
     except Exception:
         pass
 
+# # If you don't wanna use command (this will automatically convert every characters btw).
 # @bot.event
 # async def on_message(message: str):    
 #     try:
@@ -135,7 +136,6 @@ async def on_message(ctx, *messages: str):
 
 
 bot.run(TOKEN)
-# client.run(TOKEN)
 
 
 
