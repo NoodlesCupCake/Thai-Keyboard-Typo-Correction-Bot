@@ -134,7 +134,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
     
-    if all(char in '5+' for char in message.content) and '5' in message.content and re.search(r'=.+?=', message.content):
+    if (all(char in '5+' for char in message.content) and '5' in message.content) or re.search(r'=.+?=', message.content):
         return
     
     user_id = message.author.id
