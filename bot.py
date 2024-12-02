@@ -2,6 +2,7 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
+import re
 
 load_dotenv()
 
@@ -133,9 +134,9 @@ async def on_message(message):
     if message.author == bot.user:
         return
     
-    if all(not char.isalnum() for char in message.content) and any(char.isdigit() for char in message.content):
+    if all(char in '5+' for char in message.content) and '5' in message.content and re.search(r'=.+?=', message.content):
         return
-
+    
     user_id = message.author.id
     if user_toggles.get(user_id, False):
         combined_message = message.content
