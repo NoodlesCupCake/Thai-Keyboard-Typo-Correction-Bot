@@ -119,13 +119,13 @@ async def on_ready():
 @bot.command(name='เปิดบอท')
 async def enable_bot(ctx):
     user_id = ctx.author.id
-    user_toggles[user_id] = True  # Explicitly enable the bot for this user
+    user_toggles[user_id] = True
     await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"เปิด\" แล้วสำหรับคุณ")
 
 @bot.command(name='ปิดบอท')
 async def disable_bot(ctx):
     user_id = ctx.author.id
-    user_toggles[user_id] = False  # Explicitly disable the bot for this user
+    user_toggles[user_id] = False
     await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"ปิด\" แล้วสำหรับคุณ")
 
 @bot.event
@@ -133,7 +133,7 @@ async def on_message(message):
     if message.author == bot.user:
         return
     
-    if all(char in '5+' for char in message.content) and '5' in message.content:
+    if all(not char.isalnum() for char in message.content) and any(char.isdigit() for char in message.content):
         return
 
     user_id = message.author.id
