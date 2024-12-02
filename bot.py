@@ -106,23 +106,47 @@ eng2thai = {
 }
 
 intents = discord.Intents.default()
-intents.message_content = True 
+intents.message_content = True
 
 bot = commands.Bot(command_prefix='!', intents=intents)
 
+user_toggles = {}
+
 @bot.event
 async def on_ready():
-    print(f'{bot.user.name} has connected to Discord!')
+    print(f'{bot.user.name} ได้เชื่อมต่อเข้าสู่เซิร์ฟเวอร์ Discord!')
 
-@bot.command(name='ome')
-async def on_message(ctx, *messages: str):    
-    combined_message = ' '.join(messages)
-    try:
-        corrected_text = [eng2thai[eng_char] for eng_char in combined_message]
-        if corrected_text:
-            await ctx.send(f'จริง ๆ ตั้งใจจะพิมพ์ว่า "{"".join(corrected_text)}"')
-    except Exception:
-        pass
+@bot.command(name='เปิดบอท')
+async def enable_bot(ctx):
+    user_id = ctx.author.id
+    user_toggles[user_id] = True  # Explicitly enable the bot for this user
+    await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"เปิด\" แล้วสำหรับคุณ")
+
+@bot.command(name='ปิดบอท')
+async def disable_bot(ctx):
+    user_id = ctx.author.id
+    user_toggles[user_id] = False  # Explicitly disable the bot for this user
+    await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"ปิด\" แล้วสำหรับคุณ")
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    
+    if all(char in '5+' for char in message.content) and '5' in message.content:
+        return
+
+    user_id = message.author.id
+    if user_toggles.get(user_id, False):
+        combined_message = message.content
+        try:
+            corrected_text = [eng2thai[eng_char] for eng_char in combined_message]
+            if corrected_text:
+                await message.channel.send(f'จริง ๆ ตั้งใจจะพิมพ์ว่า "{"".join(corrected_text)}"')
+        except Exception:
+            pass
+
+    await bot.process_commands(message)
 
 # # If you don't wanna use command (this will automatically convert every characters btw).
 # @bot.event
