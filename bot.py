@@ -138,7 +138,7 @@ async def on_message(message):
         return
     
     user_id = message.author.id
-    if user_toggles.get(user_id, False):
+    if user_toggles.get(user_id, True):
         combined_message = message.content
         try:
             corrected_text = [eng2thai[eng_char] for eng_char in combined_message]
