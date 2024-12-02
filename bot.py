@@ -121,13 +121,15 @@ async def on_ready():
 async def enable_bot(ctx):
     user_id = ctx.author.id
     user_toggles[user_id] = True
-    await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"เปิด\" แล้วสำหรับคุณ")
+    user_name = ctx.author.display_name
+    await ctx.send(f"การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก `เปิด` แล้วสำหรับคุณ `{user_name}`")
 
 @bot.command(name='ปิดบอท')
 async def disable_bot(ctx):
     user_id = ctx.author.id
     user_toggles[user_id] = False
-    await ctx.send("การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก \"ปิด\" แล้วสำหรับคุณ")
+    user_name = ctx.author.display_name
+    await ctx.send(f"การใช้งานบอทแก้คำผิดอัตโนมัติได้ถูก `ปิด` แล้วสำหรับคุณ `{user_name}`")
 
 @bot.event
 async def on_message(message):
